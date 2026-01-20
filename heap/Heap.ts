@@ -1,17 +1,17 @@
-import { HeapType, Job } from '../types.js';
+import { HeapType, JobType } from '../types.js';
 
 export class Heap implements HeapType<JobType> {
   // a must be closer to root than be for isPriority(a, b) === true
-  isPriority: (a: Job, b: Job) => boolean;
-  constructor(isPriority: (a: Job, b: Job) => boolean) {
+  isPriority: (a: JobType, b: JobType) => boolean;
+  constructor(isPriority: (a: JobType, b: JobType) => boolean) {
     this.isPriority = isPriority;
   }
-  private heapArray: Job[] = [];
+  private heapArray: JobType[] = [];
   private swap(a: number, b: number): void {}
   private siftUp(a: number): void {}
   private siftDown(b: number): void {}
 
-  push(job: Job) {}
+  push(job: JobType) {}
   peek() {
     return null;
   }
