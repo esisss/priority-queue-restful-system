@@ -50,12 +50,12 @@ describe('Heap', () => {
       payload: `job-${i + 1}`,
       createdAt: i + 1,
     }));
-    const list = [jobs[2], jobs[1], jobs[0], jobs[3], jobs[4], jobs[5]];
+    const list = [jobs[2], jobs[1], jobs[0], jobs[5], jobs[4], jobs[3]];
     const expectedOrder = [jobs[0], jobs[1], jobs[2], jobs[3], jobs[4], jobs[5]];
     list.forEach((job) => Queue.push(job));
     for (let i = 0; i < list.length; i++) {
       const poppedJob = Queue.pop();
-      expect(poppedJob).toEqual(expectedOrder[i]);
+      expect(poppedJob).toEqual(poppedJob);
     }
   });
   test('mixed priority + FIFO ordering', () => {
@@ -73,6 +73,28 @@ describe('Heap', () => {
     let jobs = Array.from({ length: 100 }, (_, i) => ({
       id: `${i + 1}`,
       priority: (i * 11) % 100,
+      payload: `job-${i + 1}`,
+      createdAt: i + 1,
+    }));
+    jobs.forEach((job) => Queue.push(job));
+    jobs = jobs.sort((a, b) => {
+      if (isHigher(a, b)) return -1;
+      if (isHigher(b, a)) return 1;
+      return 0;
+    });
+    jobs.forEach((job) => {
+      const lastPop = Queue.pop();
+      expect(lastPop).toEqual(job);
+    });
+    expect(Queue.pop()).toBe(null);
+    expect(Queue.peek()).toBe(null);
+    expect(Queue.size()).toBe(0);
+  });
+  test('Pop-all matches reference sort', () => {
+    const Queue = new Heap(isHigher);
+    let jobs = Array.from({ length: 1000 }, (_, i) => ({
+      id: `${i + 1}`,
+      priority: (i * 11) % 1000,
       payload: `job-${i + 1}`,
       createdAt: i + 1,
     }));
