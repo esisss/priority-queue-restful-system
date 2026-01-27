@@ -1,6 +1,6 @@
-import { HeapType, JobType } from '../types.js';
+import { PriorityQueue, JobType } from '../types.js';
 
-export class Heap implements HeapType<JobType> {
+export class HeapPriorityQueue implements PriorityQueue<JobType> {
   // a must be closer to root than be for isPriority(a, b) === true
   isPriority: (a: JobType, b: JobType) => boolean;
   constructor(isPriority: (a: JobType, b: JobType) => boolean) {
@@ -12,6 +12,7 @@ export class Heap implements HeapType<JobType> {
     this.heapArray[a] = this.heapArray[b];
     this.heapArray[b] = temp;
   }
+  //Orders one branch by priority from last leaf to root.
   private siftUp(a: number): void {
     while (a > 0) {
       const parentIndex = Math.floor((a - 1) / 2);
@@ -24,6 +25,7 @@ export class Heap implements HeapType<JobType> {
       }
     }
   }
+  //Orders one branch by priority from root to last leaf.
   private siftDown(b: number): void {
     while (b <= this.heapArray.length / 2 - 1) {
       const left = b * 2 + 1;
