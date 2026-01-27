@@ -4,7 +4,7 @@ export interface JobType {
   createdAt: number;
   id: string;
 }
-export type HeapType<T> = {
+export type PriorityQueue<T> = {
   push(item: T): void;
   peek(): T | null;
   pop(): T | null;
